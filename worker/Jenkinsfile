@@ -2,10 +2,8 @@ pipeline {
    
     agent any
     
-    agent any
-
-   tools {
-        maven 'apache-maven-3.0.1'
+    tools {
+        maven 'Maven 3.6.1'
     }
 
    stages {
@@ -14,7 +12,7 @@ pipeline {
              echo 'Compiling worker app'
              dir ('worker'){
                sh 'cd worker && mvn compile'
-           }
+             }
 	   }
        }
        stage('test'){
