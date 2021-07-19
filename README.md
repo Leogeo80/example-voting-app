@@ -1,6 +1,10 @@
 Example Voting App
 =========
 
+This a sample instavote application.
+
+TEST LEOGEO
+
 Getting started
 ---------------
 
