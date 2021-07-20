@@ -8,7 +8,7 @@ pipeline {
     }
     
   stages {
-       stage('build'){
+       stage("build"){
 	   when{
 		changeset "**/worker/**"
 	   }
@@ -19,7 +19,7 @@ pipeline {
              }
 	   }
        }
-       stage('test'){
+       stage("test"){
 	   when{
 		changeset "**/worker/**"
            }
@@ -30,7 +30,7 @@ pipeline {
 	      }
            }
        }
-       stage('package'){
+       stage("package"){
 	   when{
                 changeset "**/worker/**"
            }
