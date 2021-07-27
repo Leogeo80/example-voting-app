@@ -59,7 +59,7 @@ pipeline {
             agent any
             when{
                 changeset "**/worker/**"
-                branch 'master'
+                /*branch 'master'*/
             }
             steps{
                     echo 'Packaging worker app with docker'
@@ -68,7 +68,7 @@ pipeline {
                         /*def workerImage =  docker.build("leogeo80/worker:v1}", "./worker")*/
                         def workerImage =  docker.build("leogeo80/worker:v${env.BUILD_ID}", "./worker")
                         workerImage.push()
-                        workerImage.push("${env.BRANCH_NAME}")
+                        /*workerImage.push("${env.BRANCH_NAME}")*/
                       }
                     }
                   }
