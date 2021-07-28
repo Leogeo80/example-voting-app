@@ -37,17 +37,17 @@ pipeline {
        }
        stage('docker-package'){
             agent any
-		when{
-			changeset "**/vote/**"
-			branch 'master'
-		}
-		steps{
-                    echo 'Packaging vote app with docker'
-                    script{
-                      docker.withRegistry('https://index.docker.io/v1/', 'dockerlogin'){
-			def workerImage = docker.build("leogeo80/vote:v${env.BUILD_ID}", "./vote")
-                        workerImage.push()
-                        workerImage.push("latest")
+          when{
+            changeset "**/vote/**"
+            branch 'master'
+          }
+		        steps{
+              echo 'Packaging vote app with docker'
+              script{
+                  docker.withRegistry('https://index.docker.io/v1/', 'dockerlogin'){
+			            def workerImage = docker.build("leogeo80/vote:v${env.BUILD_ID}", "./vote")
+                  workerImage.push()
+                  workerImage.push("latest")
                        }
                     }
                   }
