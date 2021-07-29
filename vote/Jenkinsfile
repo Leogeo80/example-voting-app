@@ -34,8 +34,9 @@ pipeline {
            steps{
              echo 'Running Unit Test on vote app'
              dir('vote'){
-                sh 'nosetest -v'
-             }
+                sh 'pip install -r requirements.txt'
+		sh 'nosetest -v'
+	      }
            }
        }
             stage('docker-package'){
