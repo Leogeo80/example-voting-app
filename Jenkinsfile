@@ -1,4 +1,3 @@
-  
 pipeline {
 
     agent none
@@ -38,7 +37,6 @@ pipeline {
               }
            }
        }
-
        stage('worker package'){
             agent{
                   docker{
@@ -57,19 +55,17 @@ pipeline {
                       archiveArtifacts artifacts: '**/target/*.jar', fingerprint: true
                     }
                   }
-        }       
-
+       }     
        stage('worker deploy to dev'){          
            agent any          
            when{            
-	     branch 'master'          
-	   }          
-	   steps{            
-	     echo 'Deploy instavote app with docker compose'            
-	     sh 'docker-compose up -d'          
-	   }     
+	        branch 'master'          
+	       }          
+	    steps{            
+	      echo 'Deploy instavote app with docker compose'            
+	      sh 'docker-compose up -d'          
+	    }     
        }
-
        stage('worker-docker-package'){
             agent any
             when{
@@ -87,15 +83,12 @@ pipeline {
                     }
                   }
         }
-
-
-   }
-         
-      stages {
+      
+    
 	   stage('vote build'){
 	    agent{
-           	 docker {
-            		image 'python:2.7.16-slim'
+           	docker {
+            	image 'python:2.7.16-slim'
 		        args '--user root'
               }
             }
@@ -108,8 +101,8 @@ pipeline {
                sh 'pip install -r requirements.txt'
              }
            }
-       }		
-      	   stage('vote test'){
+        }		
+      	stage('vote test'){
 	    agent{
                 docker {
             	image 'python:2.7.16-slim'
@@ -128,8 +121,8 @@ pipeline {
 	      }
            }
        }
-            stage('vote docker-package'){
-             agent any
+       stage('vote docker-package'){
+          agent any
              when{
             	changeset "**/vote/**"
            
@@ -145,9 +138,8 @@ pipeline {
                     }
                   }
         }
-   }
+   
     
-      stages {
        stage('result build'){
            when{
                 changeset "**/result/**"
@@ -198,13 +190,10 @@ pipeline {
                     }
                   }
         }
-
-
-   }
-
-     post{
-	always{
-	   echo 'Pipeline for instavote app is complete .....'
-	}
     }
+      post{
+	    always{
+	      echo 'Pipeline for instavote app is complete .....'
+	    }
+      }
 }
