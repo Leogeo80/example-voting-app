@@ -1,17 +1,17 @@
 pipeline {
 
-    agent any /*none*/
+    agent none
    
       stages {
        stage('build'){
            when{
                 changeset "**/vote/**"
            }
-           /* agent{
+           agent{
                 docker {
-            image 'python:2.7.16-slim'
+            image 'python:3.6.14-slim'
                 }
-            }*/   
+            }   
            steps{
              echo 'Compiling vote app'
              dir ('vote'){
@@ -23,11 +23,11 @@ pipeline {
            when{
                 changeset "**/vote/**"
            }
-           /*agent{
+           agent{
                 docker {
-            image 'python:2.7.16-slim'
+            image 'python:3.6.14-slim'
                 }
-            }*/
+            }
            steps{
              echo 'Running Unit Test on vote app'
              dir('vote'){
