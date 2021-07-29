@@ -6,7 +6,8 @@ pipeline {
 	 agent{
            docker {
             image 'python:2.7.16-slim'
-                }
+	    args '--user root'
+              }
             }
            stage('build'){
            when{
@@ -20,14 +21,16 @@ pipeline {
            }
        }
       	   stage('test'){
+	    agent{
+                docker {
+            	image 'python:2.7.16-slim'
+		args '--user root'
+                }
+            }
+
            when{
                 changeset "**/vote/**"
            }
-           agent{
-                docker {
-            image 'python:2.7.16-slim'
-                }
-            }
            steps{
              echo 'Running Unit Test on vote app'
              dir('vote'){
