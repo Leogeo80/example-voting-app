@@ -1,43 +1,45 @@
+  
 pipeline {
-   
-   agent none 
-      
-    stages {
-        stage('build'){
-              agent{
-                  docker{
-                    image 'maven:3.6.1-jdk-8-alpine'
-                    args '-v $HOME/.m2:/root/.m2'
-                  }
-                  }
-            when{
-              changeset "**/*worker/**"
-            }        
-            steps{
-                    echo 'Compiling worker app'
-                    dir ('worker'){
-                      sh 'mvn compile'
-                    }
+
+    agent none
+    
+      stages {
+       stage('build'){
+           when{
+                changeset "**/worker/**"
+           }
+           agent{
+            docker {
+            image 'maven:3.6.1-jdk-8-alpine'
+	    args '-v $HOME/.m2:/root/.m2'
+                }
             }
-        }
-        stage('test'){
-            agent{
-                  docker{
-                    image 'maven:3.6.1-jdk-8-alpine'
-                    args '-v $HOME/.m2:/root/.m2'
-                  }
-                  }
-            when{
-                changeset "**/*worker/**"
-              } 
-            steps{
-                    echo 'Running Unit Test on worker app'
-                    dir('worker'){
-                      sh 'mvn clean test'
-                    }
-                  }
-        }
-        stage('package'){
+           steps{
+             echo 'Compiling worker app'
+             dir ('worker'){
+               sh 'mvn compile'
+             }
+           }
+       }
+       stage('test'){
+           when{
+                changeset "**/worker/**"
+           }
+           agent{
+            docker {
+            image 'maven:3.6.1-jdk-8-alpine'
+	    args '-v $HOME/.m2:/root/.m2'
+                }
+            }
+           steps{
+             echo 'Running Unit Test on result app'
+             dir('worker'){
+               sh 'mvn clean test'
+              }
+           }
+       }
+
+       stage('package'){
             agent{
                   docker{
                     image 'maven:3.6.1-jdk-8-alpine'
@@ -55,8 +57,9 @@ pipeline {
                       archiveArtifacts artifacts: '**/target/*.jar', fingerprint: true
                     }
                   }
-        }
-        stage('docker-package'){
+        }       
+
+       stage('docker-package'){
             agent any
             when{
                 changeset "**/worker/**"
@@ -73,12 +76,8 @@ pipeline {
                     }
                   }
         }
-    }
-   post{
-     always{
-	 echo 'Pipeline for worker is complete..'
-     }
-     
+
+
    }
 
 }

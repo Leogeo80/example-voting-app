@@ -196,7 +196,6 @@ pipeline {
 
       }
     }
-    
     stage('Sonarqube') {
       agent any
      /* when{
@@ -232,7 +231,7 @@ pipeline {
     stage('Deploy to Dev') {
       agent any
       when {
-	branch 'master'
+	        branch 'master'
       }
       steps {
         sh 'docker-compose up -d'
